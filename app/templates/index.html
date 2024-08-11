@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <!-- D3.js -->
+    <script src="https://d3js.org/d3.v4.js"></script>
+
+    <!-- JQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- CSS Styles -->
+    <link rel="stylesheet" href="static/css/style.css">
+    
+    <!-- Google Icons -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+
+    <!-- Favicon -->
+    <link rel="icon" href="static/images/favicon.ico" type="image/x-icon">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hubble</title>
+</head>
+<body>
+    
+    <div class="header-container">
+        <div class="header">
+            <h1>Hubble</h1>
+        </div>
+    </div>
+
+    <div class="main-container">
+
+        <div class="form-container">
+
+            <div class="form-section">
+
+                <h3 class="form-subtitle">Monthly Income</h3>
+
+                <div class="input-result">
+                    <p id="total-monthly-income">Total: $<span id="total-monthly-income-value">0</span></p>
+                </div>
+
+                <div class="input-group" id="income-inputs">
+                    <input type="number" id="hours-worked" placeholder="Hours (bi-weekly)">
+                    <input type="number" id="hourly-wage" placeholder="Hourly Wage">
+                    <input type="number" id="percent-budget" placeholder="Budget % (ex. 40)">
+                    <input type="number" id="other-income" placeholder="Other Income">
+                </div>
+
+                <button class="add-field-btn" id="add-income-btn" style="display:none;">+</button>
+
+            </div>
+
+            <div class="form-section">
+
+                <h3 class="form-subtitle">Monthly Expenses</h3>
+
+                <div class="input-result">
+                    <p id="total-monthly-expenses">Total: $<span id="total-monthly-expense-value">0</span></p>
+                </div>
+
+                <div class="input-group" id="expense-inputs">
+                    <input type="number" id="groceries-expense" placeholder="Groceries">
+                    <input type="number" id="dining-expense" placeholder="Food & Dining">
+                    <input type="number" id="transportation-expense" placeholder="Shopping">
+                </div>
+
+                <button class="add-field-btn" id="add-expense-btn">+</button>
+
+            </div>
+
+            <div class="form-section">
+
+                <h3 class="form-subtitle">Recurring Expenses</h3>
+
+                <div class="input-result">
+                    <p id="total-recurring-expenses">Total: $<span id="total-recurring-expense-value">0</span></p>
+                </div>
+
+                <div class="input-group" id="recurring-expense-inputs">
+                    <input type="number" id="recurring-expense" placeholder="Parking">
+                    <input type="number" id="rent-expense" placeholder="Car Insurance">
+                    <input type="number" id="subscriptions-expense" placeholder="Subscriptions">
+                </div>
+
+                <button class="add-field-btn" id="add-recurring-expense-btn">+</button>
+
+            </div>
+
+
+            <div class="form-section" id="analytics-section">
+                <div class="metrics-container">
+                    <div class="metric-pair">
+                        <h3 class="amount-subtitle">Net Amount</h3>
+                        <h2 class="big-metric" id="net-amount"><span id="negative-sign">-</span>$<span id="net-amount-value">0</span></h2>                    
+                    </div>
+    
+                    <div class="metric-pair">
+                        <h3 class="amount-subtitle">Today's Budget</h3>
+                        <h2 class="big-metric" id="budget-amount"><span id="negative-sign">-</span>$<span id="budget-amount-value">0</span></h2>
+                    </div>
+                </div>
+
+                <svg width="400" height="200"></svg>
+
+                <!-- progress bar of actual vs. expected budget -->
+                <p id="progress-label">Budget Progress</p>
+                <div class="progress">
+                    <div class="progress-bar" id="actual-progress-bar" 
+                    role="progressbar" aria-valuemin="0" aria-valuemax="100">
+                        <span id="actual-progress-label">Actual</span>
+                        <span id="actual-progress-value" style="float: right;"></span>
+                    </div>
+                </div>
+                
+                <div class="progress">
+                    <div class="progress-bar" id="expected-progress-bar" 
+                    role="progressbar" aria-valuemin="0" aria-valuemax="100">
+                         <span id="expected-progress-label">Expected</span>
+                         <span id="expected-progress-value"></span>
+                    </div>
+                </div>
+
+                <div class="target">
+                    <p id="target-label">Days To Break Even: <span id="target-value"></span></p>
+                </div>
+
+                <div class="weekly-budget">
+                    <p id="weekly-budget-label">Weekly Budget: $<span id="weekly-budget-value"></span></p>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="system-btns-container">
+            <a class="system-btn" href="/logout">Log out</a>
+            <button class="system-btn" id="reset-btn">Reset</button>
+        </div>
+
+    </div>
+
+    <!-- JS -->
+    <script src="static/js/script.js"></script>
+    <script src="static/js/viz.js"></script>
+
+</body>
+</html>

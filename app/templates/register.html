@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <!-- CSS Styles -->
+    <link rel="stylesheet" href="static/css/style.css">
+
+    <!-- Favicon -->
+    <link rel="icon" href="static/images/favicon.ico" type="image/x-icon">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+</head>
+<body>
+    <div class="login-container">
+        <h1 class="register-title">Register</h1>
+        
+        <form class="login-form" action="/register" method="POST">
+            <label class="form-label" for="username">Username</label>
+            <input type="text" name="username" id="username" required>
+            <br>
+            <label class="form-label" for="password">Password</label>
+            <input type="password" name="password" id="password" required>
+            <br>
+            <button id="login-btn" type="submit">Register</button>
+        </form>
+        
+        <p>Already have an account? <a id="login-btn" href="/login">Login</a></p>
+    </div>
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <!-- CSS Styles -->
+    <link rel="stylesheet" href="static/css/style.css">
+
+    <!-- Favicon -->
+    <link rel="icon" href="static/images/favicon.ico" type="image/x-icon">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+</head>
+<body>
+
+    <div class="login-container">
+        <h1 class="login-title">Login</h1>
+
+        <form class="login-form" action="/login" method="POST">
+            <label class="form-label" for="username">Username</label>
+            <input type="text" name="username" id="username" required>
+            <br>
+            <label class="form-label" for="password">Password</label>
+            <input type="password" name="password" id="password" required>
+            <br>
+            <button id="login-btn" type="submit">Login</button>
+        </form>
+
+        <p>Don't have an account? <a id="login-btn" href="/register">Register</a></p>
+
+        <p class="system-msg">{% if msg %} {{ msg }} {% endif %}</p>
+    </div>
+</body>
+</html>
