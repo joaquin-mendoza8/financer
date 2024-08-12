@@ -16,7 +16,6 @@ class Config:
     # session configuration
     SESSION_TYPE = 'sqlalchemy'
     SESSION_PERMANENT = False
-    SESSION_USE_SIGNER = True
     SESSION_SQLALCHEMY = db
 
     # db connection
@@ -26,6 +25,6 @@ class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 class TestingConfig(Config):
-    TESTING = True
+    # TESTING = True
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL_DEV') # use dev db for testing
     WTF_CSRF_ENABLED = False  # disable CSRF protection in testing env

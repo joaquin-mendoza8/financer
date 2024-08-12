@@ -12,7 +12,7 @@ app.config.from_object(Config) # set app configs
 db.init_app(app) # init db engine
 session.init_app(app) # init session engine
 migrate = Migrate(app, db) # init migration engine
-app.config.from_object(TestingConfig) # set testing config
+# app.config.from_object(TestingConfig) # set testing config
 
 # create the database tables
 with app.app_context():
