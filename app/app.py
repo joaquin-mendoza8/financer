@@ -1,88 +1,103 @@
-from flask import Flask, render_template, render_template, session, redirect, url_for, request, jsonify, flash
-from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
+from flask import Flask, render_template, render_template, session, redirect, url_for, request
+from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_session import Session
-from dotenv import load_dotenv
-
-# Load environment variables from .env file
-load_dotenv()
+from app.config import Config, db, session
+from flask_migrate import Migrate
+from app.models import User
 
 app = Flask(__name__)
 
-app.secret_key = '1080#hubble_app!1440'
-app.config['SESSION_TYPE'] = 'filesystem'
-app.config['SESSION_PERMANENT'] = False
-app.config['SESSION_USE_SIGNER'] = True
-Session(app)
+# configure the app
+app.config.from_object(Config)
+db.init_app(app)
+session.init_app(app)
+migrate = Migrate(app, db)
 
-# Initialize Flask-Login
+# create the database tables
+with app.app_context():
+    db.create_all() 
+
+# initialize flask-login
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 
-# Dummy user storage (replace with a database in production)
-users = {}
 
-# User class
-class User(UserMixin):
-    def __init__(self, id, username, password):
-        self.id = id
-        self.username = username
-        self.password_hash = generate_password_hash(password)
-
-# Load user
+# load user
 @login_manager.user_loader
 def load_user(user_id):
-    return users.get(user_id)
+    return User.query.get(int(user_id))
 
 # ROUTES
 
-# Login route
+
+# login route
 @app.route('/login', methods=['GET', 'POST'])
 def login():
 
-    msg = None
-
     if request.method == 'POST':
+
+        # get username/pw from form
         username = request.form['username']
         password = request.form['password']
-        user = next((u for u in users.values() if u.username == username), None)
+
+        # check if user exists / pw is correct
+        user = User.query.filter_by(username=username).first()
         if user and check_password_hash(user.password_hash, password):
             login_user(user)
-            return redirect(url_for('index'))
+            print('User logged in:', user.username)
+            return render_template('index.html')
         else:
             print('Invalid username or password') # Replace with flash message in production
-            msg = 'Invalid username or password'
-    
-    return render_template('index.html', msg=msg)
+            return render_template('login.html', msg='Invalid username or password')
 
-# Logout route
+    return render_template('login.html')
+
+
+# logout route
 @app.route('/logout')
 @login_required
 def logout():
 
+    # log out the user
     print('Logging out user:', current_user.username)
     logout_user()
 
-    # return redirect(url_for('login'))
     return render_template('login.html')
 
-# Register route (for testing purposes; remove in production)
+
+# register route (for testing purposes; remove in production)
 @app.route('/register', methods=['GET', 'POST'])
 def register():
+
+    # if form is submitted
     if request.method == 'POST':
+
+        # get username/pw from form
         username = request.form['username']
         password = request.form['password']
-        if username in [u.username for u in users.values()]:
-            print('User already exists') # Replace with flash message in production
-            pass
+        
+        # check if user already exists
+        user = User.query.filter_by(username=username).first()
+        if user:
+
+            # if user exists, return error message
+            return render_template('register.html', msg='User already exists')
         else:
-            user_id = str(len(users) + 1)
-            users[user_id] = User(user_id, username, password)
+
+            # create a new user and add to the database
+            password_hash = generate_password_hash(password)
+            new_user = User(username=username, password_hash=password_hash)
+            db.session.add(new_user)
+            db.session.commit()
+
+            # log in the new user
             return redirect(url_for('login'))
+
     return render_template('register.html')
 
-# Main application entry point
+
+# main application entry point
 @app.route('/')
 @login_required
 def index():

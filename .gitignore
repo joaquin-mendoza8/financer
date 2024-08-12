@@ -3,5 +3,7 @@ ideas.txt
 *.pyc
 __pycache__/
 .Python/
-.env/
+.env
 flask_session/
+instance/
+scripts/

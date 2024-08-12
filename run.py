@@ -1,18 +1,16 @@
 from app.app import app
 import os
 import subprocess
-from gunicorn.app.wsgiapp import WSGIApplication
 from dotenv import load_dotenv
 
-# Load environment variables from .env file
+# load env variables from .env file (dev only)
 load_dotenv()
 
 if __name__ == '__main__':
 
-    print(os.environ.get("RUN_DEV"), os.environ.get("PORT"))
-    run_dev = os.environ.get("RUN_DEV") == "true"
+    run_dev = os.environ.get("RUN_DEV") == "True"
 
-    # If running locally, run the app with Flask's built-in server
+    # if running locally, run the app with Flask's built-in server
     if run_dev:
         app.run(
             host='0.0.0.0',
@@ -21,7 +19,7 @@ if __name__ == '__main__':
             debug=True
         )
 
-    # If running on Heroku, run the app with Gunicorn
+    # if running on Cloud, run with Gunicorn
     else:
         subprocess.run([
             "gunicorn", "-w", "2", "-b",
