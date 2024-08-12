@@ -24,3 +24,8 @@ class Config:
     DATABASE_URL_PROD = os.environ.get('DATABASE_URL_PROD')
     SQLALCHEMY_DATABASE_URI = DATABASE_URL_DEV if os.environ.get('RUN_DEV') == "True" else DATABASE_URL_PROD
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+
+class TestingConfig(Config):
+    TESTING = True
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL_DEV') # use dev db for testing
+    WTF_CSRF_ENABLED = False  # disable CSRF protection in testing env

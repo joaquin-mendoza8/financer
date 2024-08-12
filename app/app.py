@@ -1,17 +1,18 @@
 from flask import Flask, render_template, render_template, session, redirect, url_for, request
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
-from app.config import Config, db, session
+from app.config import Config, TestingConfig, db, session
 from flask_migrate import Migrate
 from app.models import User
 
 app = Flask(__name__)
 
 # configure the app
-app.config.from_object(Config)
-db.init_app(app)
-session.init_app(app)
-migrate = Migrate(app, db)
+app.config.from_object(Config) # set app configs
+db.init_app(app) # init db engine
+session.init_app(app) # init session engine
+migrate = Migrate(app, db) # init migration engine
+app.config.from_object(TestingConfig) # set testing config
 
 # create the database tables
 with app.app_context():
@@ -70,29 +71,31 @@ def logout():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
 
+    # WILL CREATE GUARDRAILS FOR PRODUCTION
+
     # if form is submitted
-    if request.method == 'POST':
+    # if request.method == 'POST':
 
-        # get username/pw from form
-        username = request.form['username']
-        password = request.form['password']
+    #     # get username/pw from form
+    #     username = request.form['username']
+    #     password = request.form['password']
         
-        # check if user already exists
-        user = User.query.filter_by(username=username).first()
-        if user:
+    #     # check if user already exists
+    #     user = User.query.filter_by(username=username).first()
+    #     if user:
 
-            # if user exists, return error message
-            return render_template('register.html', msg='User already exists')
-        else:
+    #         # if user exists, return error message
+    #         return render_template('register.html', msg='User already exists')
+    #     else:
 
-            # create a new user and add to the database
-            password_hash = generate_password_hash(password)
-            new_user = User(username=username, password_hash=password_hash)
-            db.session.add(new_user)
-            db.session.commit()
+    #         # create a new user and add to the database
+    #         password_hash = generate_password_hash(password)
+    #         new_user = User(username=username, password_hash=password_hash)
+    #         db.session.add(new_user)
+    #         db.session.commit()
 
-            # log in the new user
-            return redirect(url_for('login'))
+    #         # log in the new user
+    #         return redirect(url_for('login'))
 
     return render_template('register.html')
 
