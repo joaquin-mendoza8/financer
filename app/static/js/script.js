@@ -98,11 +98,9 @@ $(document).ready(function() {
     // dynamically add new expense fields
     let incomeFieldCount = 4;
     let expenseFieldCount = 3;
-    let recurringFieldCount = 3;
 
     const addIncomeBtn = document.getElementById('add-income-btn');
     const addMonthlyExpenseBtn = document.getElementById('add-expense-btn');
-    const addRecurringExpenseBtn = document.getElementById('add-recurring-expense-btn');
 
     // add field for income
     addIncomeBtn.addEventListener('click', function() {
@@ -116,13 +114,6 @@ $(document).ready(function() {
         addField('expense', 'add-expense-btn', expenseFieldCount);
         expenseFieldCount++;
         reCalculateTotalExpenses('total-monthly-expense-value', "expense-inputs");
-    });
-
-    // add field for recurring expense
-    addRecurringExpenseBtn.addEventListener('click', function() {
-        addField('recurring-expense', 'add-recurring-expense-btn', recurringFieldCount);
-        recurringFieldCount++;
-        reCalculateTotalExpenses('total-recurring-expense-value', "recurring-expense-inputs");
     });
 
 });
