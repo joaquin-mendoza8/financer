@@ -19,10 +19,11 @@ if __name__ == '__main__':
             debug=True
         )
 
-    # if running on Cloud, run with Gunicorn
+    # if running on Cloud, run with Gunicorn (and new relic)
     else:
+        new_relic_config_file = os.environ.get('NEW_RELIC_CONFIG_FILE', 'newrelic.ini')
         subprocess.run([
-            "gunicorn", "-w", "2", "-b",
-            f"0.0.0.0:{(os.environ.get('PORT'))}",
+            "newrelic-admin", "run-program", "gunicorn", "-w", "2", "-b",
+            f"0.0.0.0:{os.environ.get('PORT')}",
             "app.app:app"
-        ])
+        ], env=dict(os.environ, NEW_RELIC_CONFIG_FILE=new_relic_config_file))
